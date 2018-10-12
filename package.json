@@ -1,0 +1,21 @@
+{
+  "name": "noaa-aurora-map",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "aurora",
+    "noaa"
+  ],
+  "author": "Peter Löfquist <peterlofquist@gmail.com>",
+  "license": "ISC",
+  "dependencies": {
+    "pngjs-image": ">=0.11.7"
+  },
+  "engines": {
+    "node": ">=6.9.5"
+  }
+}
