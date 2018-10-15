@@ -71,18 +71,6 @@ AuroraMap.colorMix = (oldColor, newColor) => {
   };
 }
 
-// TODO: implement
-/*AuroraMap._customImageMap = null;
-AuroraMap.setCustomImageMap = path => {
-  fs.createReadStream(path).pipe(new png({ filterType: 4 })).on('parsed', () => {
-    if (requireImageSize.width == this.width && requireImageSize.height == this.height) {
-      AuroraMap._customImageMap = path;
-    } else {
-      throw new Error('Image has to be of size 1024x512 and be a .png file.');
-    }
-  });
-}*/
-
 AuroraMap.colorForActivity = activity => {
   if (activity == 0) return null;
   let color = null;
