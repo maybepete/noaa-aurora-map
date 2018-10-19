@@ -11,7 +11,7 @@
     "noaa"
   ],
   "author": "Peter Löfquist <peterlofquist@gmail.com>",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "pngjs-image": ">=0.11.7"
   },
