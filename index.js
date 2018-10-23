@@ -86,7 +86,7 @@ AuroraMap.generateMap = (rawData, output, callback) => {
       callback(err, file);
     }
   }
-  let basemap = path.join(path.dirname(fs.realpathSync(__filename)), './maps/basemap.png');
+  let basemap = path.join(path.dirname(fs.realpathSync(__filename)), './maps/basemap-512.png');
   PNGImage.readImage(basemap, (err, baseImage) => {
     if (err) return cb(err);
     if (requireImageSize.width !== baseImage.getWidth() || requireImageSize.height !== baseImage.getHeight()) {
