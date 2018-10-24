@@ -21,6 +21,32 @@ AuroraMap.heatMapColors = {
   '90': { red: 165, green: 0, blue: 38, alpha: 255 }
 };
 
+AuroraMap.heatMapColorCalculator = activity => {
+  let percentPerHex = 255 / 100;
+  let red = 0;
+  let green = 0;
+  let blue = 0;
+  let alpha = AuroraMap.easeOutExpo(activity, 0, 225, 100);
+  if (activity > 0 && activity <= 50) {
+    red = Math.round(percentPerHex * activity);
+    green = 255;
+  } else {
+    red = 255;
+    green = Math.round(percentPerHex * (100 - activity));
+  }
+  return {
+    red: red,
+    green: green,
+    blue: blue,
+    alpha: alpha
+  };
+}
+
+AuroraMap.easeOutExpo = (t, b, c, d) => {
+  //http://gizma.com/easing/
+  return c * ( -Math.pow( 2, -10 * t / d ) + 1 ) + b;
+}
+
 AuroraMap.version = require('./package.json').version;
 
 AuroraMap.parseAuroraActivityData = rawData => {
@@ -95,8 +121,8 @@ AuroraMap.generateMap = (rawData, output, callback) => {
     let image = PNGImage.copyImage(baseImage);
     AuroraMap.parseAuroraActivityData(rawData).forEach((latitude, lat) => {
       latitude.forEach((activity, lon) => {
-        let activityColor = AuroraMap.colorForActivity(activity);
-        if (activityColor) {
+        if (activity > 0) {
+          let activityColor = AuroraMap.heatMapColorCalculator(activity);
           let idx = image.getIndex(lon, lat);
           let newColor = AuroraMap.colorMix({
             red: image.getRed(idx),
