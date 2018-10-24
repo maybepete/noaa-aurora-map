@@ -8,19 +8,6 @@ const requireImageSize = {
 
 let AuroraMap = {};
 
-AuroraMap.heatMapColors = {
-  '0': { red: 0, green: 104, blue: 55, alpha: 255 },
-  '5': { red: 26, green: 152, blue: 80, alpha: 255 },
-  '10': { red: 102, green: 189, blue: 99, alpha: 255 },
-  '15': { red: 166, green: 217, blue: 106, alpha: 255 },
-  '20': { red: 217, green: 239, blue: 139, alpha: 255 },
-  '50': { red: 254, green: 224, blue: 139, alpha: 255 },
-  '60': { red: 253, green: 174, blue: 97, alpha: 255 },
-  '70': { red: 244, green: 109, blue: 67, alpha: 255 },
-  '80': { red: 215, green: 48, blue: 39, alpha: 255 },
-  '90': { red: 165, green: 0, blue: 38, alpha: 255 }
-};
-
 AuroraMap.heatMapColorCalculator = activity => {
   let percentPerHex = 255 / 100;
   let red = 0;
