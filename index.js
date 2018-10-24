@@ -86,9 +86,11 @@ AuroraMap.getFileSystemSafeUTCDateString = () => {
 }
 
 AuroraMap.colorMix = (oldColor, newColor) => {
-  let newRed = Math.round((oldColor.red + newColor.red) / 2);
-  let newGreen = Math.round((oldColor.green + newColor.green) / 2);
-  let newBlue = Math.round((oldColor.blue + newColor.blue) / 2);
+  let percentageAlpha = newColor.alpha / 255;
+  let newRed = Math.round((oldColor.red + (newColor.red * percentageAlpha)) / (1 + percentageAlpha));
+  let newGreen = Math.round((oldColor.green + (newColor.green * percentageAlpha)) / (1 + percentageAlpha));
+  let newBlue = Math.round((oldColor.blue + (newColor.blue * percentageAlpha)) / (1 + percentageAlpha));
+
   return {
     red: newRed,
     green: newGreen,
