@@ -6,6 +6,9 @@ const requireImageSize = {
   height: 512
 };
 
+const SunCalc = require('suncalc');
+const validAtRegex = /Product Valid At: (.*)/;
+
 let AuroraMap = {};
 
 AuroraMap.heatMapColorCalculator = activity => {
@@ -108,19 +111,35 @@ AuroraMap.generateMap = (rawData, output, callback) => {
       return cb('Wrong image size. Requires a image size of 1024x512');
     }
     let image = PNGImage.copyImage(baseImage);
-    AuroraMap.parseAuroraActivityData(rawData).forEach((latitude, lat) => {
+    let validAtDate = new Date(rawData.match(validAtRegex)[1]);
+    let utcDate = new Date(Date.UTC(validAtDate.getFullYear(), validAtDate.getMonth(), validAtDate.getDate(), validAtDate.getHours(), validAtDate.getMinutes(), validAtDate.getSeconds()));
+    let data = AuroraMap.parseAuroraActivityData(rawData);
+    data.forEach((latitude, lat) => {
+      let latDegreePoint = (180 / data.length);
+      let latDegree = 90 - ((latDegreePoint / 2) + (lat * latDegreePoint));
       latitude.forEach((activity, lon) => {
+        let lonDegreePoint = (360 / latitude.length);
+        let lonDegree = -180 + ((lonDegreePoint / 2) + (lon * lonDegreePoint));
+        let idx = image.getIndex(lon, lat);
+        let color = {
+          red: image.getRed(idx),
+          green: image.getGreen(idx),
+          blue: image.getBlue(idx),
+          alpha: image.getAlpha(idx)
+        };
+        let times = SunCalc.getTimes(utcDate, latDegree, lonDegree);
+        // TODO: do the same for dawk & dusk, nauticalDawn & nauticalDusk
+        if (
+          utcDate.getTime() < times.nightEnd.getTime()
+          || utcDate.getTime() > times.night.getTime()
+        ) {
+          color = AuroraMap.colorMix(color, { red: 0, green: 0, blue: 0, alpha: 127.5 });
+        }
         if (activity > 0) {
           let activityColor = AuroraMap.heatMapColorCalculator(activity);
-          let idx = image.getIndex(lon, lat);
-          let newColor = AuroraMap.colorMix({
-            red: image.getRed(idx),
-            green: image.getGreen(idx),
-            blue: image.getBlue(idx),
-            alpha: image.getAlpha(idx)
-          }, activityColor);
-          image.setAt(lon, lat, newColor);
+          color = AuroraMap.colorMix(color, activityColor);
         }
+        image.setAt(lon, lat, color);
       });
     });
     image.writeImage(output, err => {
