@@ -18,11 +18,12 @@ AuroraMap.heatMapColorCalculator = activity => {
   let blue = 0;
   let alpha = AuroraMap.easeOutExpo(activity, 0, 225, 100);
   if (activity > 0 && activity <= 50) {
-    red = Math.round(percentPerHex * activity);
+    red = Math.round((percentPerHex * 2) * activity);
     green = 255;
   } else {
     red = 255;
-    green = Math.round(percentPerHex * (100 - activity));
+    let greenFix = activity - 50;
+    green = Math.round((percentPerHex * 2) * (50 - greenFix));
   }
   return {
     red: red,
